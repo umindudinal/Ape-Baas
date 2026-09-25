@@ -940,9 +940,129 @@ const resetPasswordWithOtp = async (req, res) => {
     }
 };
 
+// 7. Google Sign-In (Login / Auto-Register for Google Users)
+const googleLogin = async (req, res) => {
+    const { email, full_name, google_id, profile_image_url, role = 'customer' } = req.body;
+
+    if (!email) {
+        return res.status(400).json({ error: "Google ඊමේල් ලිපිනයක් හමු නොවීය." });
+    }
+
+    try {
+        const cleanEmail = email.trim().toLowerCase();
+        const cleanName = full_name ? full_name.trim() : cleanEmail.split('@')[0];
+
+        // 1. Check if user already exists in profiles
+        let { data: profile, error: profileErr } = await supabase
+            .from('profiles')
+            .select('*')
+            .ilike('email', cleanEmail)
+            .maybeSingle();
+
+        if (profile) {
+            // Role Validation: Check if user registered as a different role
+            if (role && profile.role && profile.role.toLowerCase() !== role.toLowerCase()) {
+                const actualRoleText = profile.role.toLowerCase() === 'provider' ? 'සේවා සපයන්නෙකු (Provider)' : 'පාරිභෝගිකයෙකු (Customer)';
+                const requestedRoleText = role.toLowerCase() === 'provider' ? 'සේවා සපයන්නෙකු (Provider)' : 'පාරිභෝගිකයෙකු (Customer)';
+                console.warn(`⚠️ Google Login Role Mismatch for ${cleanEmail}: DB role is '${profile.role}', requested role is '${role}'`);
+                return res.status(403).json({ 
+                    error: `ඔබගේ ගිණුම ${actualRoleText} ගිණුමකි. ${requestedRoleText} ලෙස ලොග් විය නොහැක.` 
+                });
+            }
+
+            // If profile exists, update profile_image_url or full_name if empty
+            const updates = {};
+            if (!profile.profile_image_url && profile_image_url) {
+                updates.profile_image_url = profile_image_url;
+            }
+            if (!profile.full_name && cleanName) {
+                updates.full_name = cleanName;
+            }
+            if (Object.keys(updates).length > 0) {
+                await supabase.from('profiles').update(updates).eq('id', profile.id);
+                profile = { ...profile, ...updates };
+            }
+        } else {
+            // 2. New User -> Try registering in Supabase Auth first
+            let userId = null;
+            try {
+                const randomPass = crypto.randomBytes(16).toString('hex') + 'Aa1@#$';
+                const { data: authSignUp, error: authSignUpErr } = await supabase.auth.signUp({
+                    email: cleanEmail,
+                    password: randomPass,
+                    options: {
+                        data: {
+                            full_name: cleanName,
+                            user_role: role || 'customer'
+                        }
+                    }
+                });
+                if (!authSignUpErr && authSignUp?.user?.id) {
+                    userId = authSignUp.user.id;
+                }
+            } catch (authErr) {
+                console.warn("⚠️ Supabase auth signup skipped:", authErr.message);
+            }
+
+            if (!userId) {
+                userId = crypto.randomUUID();
+            }
+
+            // Insert into profiles
+            const newUserData = {
+                id: userId,
+                full_name: cleanName,
+                email: cleanEmail,
+                phone: '',
+                role: role || 'customer',
+                profile_image_url: profile_image_url || null,
+            };
+
+            const { data: insertedProfile, error: insertErr } = await supabase
+                .from('profiles')
+                .upsert([newUserData])
+                .select()
+                .maybeSingle();
+
+            if (insertErr) {
+                console.error("❌ Failed to create profile for Google user:", insertErr.message);
+                return res.status(500).json({ error: "Google ගිණුම සෑදීමට නොහැකි විය: " + insertErr.message });
+            }
+
+            profile = insertedProfile || newUserData;
+        }
+
+        console.log("✅ Google Sign-in successful for:", cleanEmail);
+
+        return res.status(200).json({
+            success: true,
+            message: "Google ගිණුම මගින් සාර්ථකව පිවිසුණි!",
+            user: {
+                id: profile.id,
+                email: profile.email,
+                user_metadata: {
+                    full_name: profile.full_name,
+                    role: profile.role,
+                    phone: profile.phone,
+                    address: profile.address,
+                    district: profile.district,
+                    city: profile.city,
+                    profile_image_url: profile.profile_image_url
+                }
+            },
+            profile: profile
+        });
+
+    } catch (err) {
+        console.error("❌ Google Login Server Error:", err);
+        return res.status(500).json({ error: "සර්වර් එකේ දෝෂයක්. නැවත උත්සාහ කරන්න." });
+    }
+};
+
 module.exports = {
     registerUser,
     loginUser,
+    googleLogin,
     getUserProfile,
     updateUserProfile,
     changePassword,

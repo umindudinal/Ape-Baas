@@ -214,7 +214,7 @@ export default function Footer() {
                 <Phone size={18} className="text-emerald-400 shrink-0" />
                 <div className="text-xs sm:text-sm text-slate-300">
                   <span className="font-extrabold text-white block">Hotline 24/7</span>
-                  <span>+94 77 123 4567 / +94 11 234 5678</span>
+                  <span>+94 77 964 8818</span>
                 </div>
               </div>
 
@@ -222,7 +222,7 @@ export default function Footer() {
                 <Mail size={18} className="text-emerald-400 shrink-0" />
                 <div className="text-xs sm:text-sm text-slate-300">
                   <span className="font-extrabold text-white block">Email Support</span>
-                  <a href="mailto:support@apebaas.lk" className="text-emerald-400 font-semibold hover:underline">support@apebaas.lk</a>
+                  <a href="mailto:apebaaslk@gmail.com" className="text-emerald-400 font-semibold hover:underline">apebaaslk@gmail.com</a>
                 </div>
               </div>
             </div>

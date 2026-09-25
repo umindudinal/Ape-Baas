@@ -47,6 +47,7 @@ router.get('/reviews', getAdminReviews);
 router.delete('/reviews/:reviewId', deleteAdminReview);
 router.post('/users/:userId/toggle-status', toggleUserStatus);
 router.delete('/users/:userId', deleteUserAccount);
+router.delete('/providers/:userId', deleteUserAccount);
 router.post('/notifications/broadcast', broadcastNotification);
 router.get('/notifications/broadcast', getBroadcastNotifications);
 

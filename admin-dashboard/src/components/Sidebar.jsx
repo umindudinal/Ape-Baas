@@ -191,7 +191,7 @@ const Sidebar = ({
           <div className="flex items-center gap-3 min-w-0">
             <div className="relative shrink-0">
               <img
-                src={currentUser?.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120"}
+                src={currentUser?.avatar || currentUser?.profile_image_url || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120"}
                 alt="Admin Avatar"
                 className="w-9 h-9 rounded-full object-cover border-2 border-amber-400/60 group-hover:border-amber-500 transition-colors"
               />

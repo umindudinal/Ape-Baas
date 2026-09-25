@@ -69,6 +69,70 @@ class ApiService {
     }
   }
 
+  // Google Sign-In Function
+  static Future<Map<String, dynamic>> googleLogin({
+    required String email,
+    String? fullName,
+    String? googleId,
+    String? profileImageUrl,
+    String role = 'customer',
+  }) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/auth/google-login'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'email': email,
+          'full_name': ?fullName,
+          'google_id': ?googleId,
+          'profile_image_url': ?profileImageUrl,
+          'role': role,
+        }),
+      );
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode == 200 && data['success'] == true) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        if (data['session'] != null && data['session']['access_token'] != null) {
+          await prefs.setString('token', data['session']['access_token']);
+        }
+        if (data['user'] != null) {
+          final user = data['user'];
+          await prefs.setString('user_id', user['id'] ?? '');
+          await prefs.setString('email', user['email'] ?? email);
+
+          final userMetadata = user['user_metadata'] ?? {};
+          if (userMetadata['full_name'] != null) {
+            await prefs.setString('full_name', userMetadata['full_name']);
+          } else if (fullName != null) {
+            await prefs.setString('full_name', fullName);
+          }
+          if (userMetadata['phone'] != null) {
+            await prefs.setString('phone', userMetadata['phone']);
+          }
+          await prefs.setString('user_role', userMetadata['role'] ?? role);
+
+          if (userMetadata['profile_image_url'] != null) {
+            await prefs.setString('profile_image_url', userMetadata['profile_image_url']);
+          } else if (profileImageUrl != null) {
+            await prefs.setString('profile_image_url', profileImageUrl);
+          }
+        }
+
+        return {
+          'success': true,
+          'message': data['message'] ?? 'Google මගින් සාර්ථකව පිවිසුණි!',
+          'user': data['user']
+        };
+      } else {
+        return {'success': false, 'message': data['error'] ?? 'Google මගින් පිවිසීමට නොහැකි විය.'};
+      }
+    } catch (e) {
+      return {'success': false, 'message': 'සර්වර් එකට සම්බන්ධ වීමට නොහැකි විය: $e'};
+    }
+  }
+
   // OTP සංකේතය ඊමේල් එකට යැවීම
   static Future<Map<String, dynamic>> sendRegisterOtp({
     required String fullName,

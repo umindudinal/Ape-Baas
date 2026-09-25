@@ -1194,7 +1194,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                             SizedBox(height: 2),
                             Text(
-                              '+94 77 123 4567',
+                              '+94 77 964 8818',
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
@@ -1205,7 +1205,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ),
                       ElevatedButton(
-                        onPressed: () => _makePhoneCall('+94771234567'),
+                        onPressed: () => _makePhoneCall('+94779648818'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.deepNavy,
                           padding: const EdgeInsets.symmetric(
@@ -1270,7 +1270,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                             SizedBox(height: 2),
                             Text(
-                              '+94 77 123 4567',
+                              '+94 77 964 8818',
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
@@ -1281,7 +1281,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ),
                       ElevatedButton(
-                        onPressed: () => _openWhatsApp('94771234567'),
+                        onPressed: () => _openWhatsApp('94779648818'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.successGreen,
                           padding: const EdgeInsets.symmetric(
@@ -1346,7 +1346,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                             SizedBox(height: 2),
                             Text(
-                              'support@hondabass.lk',
+                              'apebaaslk@gmail.com',
                               style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.bold,
@@ -1357,7 +1357,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ),
                       ElevatedButton(
-                        onPressed: () => _sendEmail('support@hondabass.lk'),
+                        onPressed: () => _sendEmail('apebaaslk@gmail.com'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF2563EB),
                           padding: const EdgeInsets.symmetric(

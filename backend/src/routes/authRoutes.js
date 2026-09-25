@@ -2,6 +2,7 @@ const express = require('express');
 const {
     registerUser,
     loginUser,
+    googleLogin,
     getUserProfile,
     updateUserProfile,
     changePassword,
@@ -35,6 +36,9 @@ router.post('/register', registerUser);
 
 // ලොග් වීම සඳහා (POST Request)
 router.post('/login', loginUser);
+
+// Google Sign-In මගින් ලොග් වීම සඳහා (POST Request)
+router.post('/google-login', googleLogin);
 
 // Profile තොරතුරු ලබා ගැනීම සඳහා (GET Request)
 router.get('/profile/:userId', getUserProfile);

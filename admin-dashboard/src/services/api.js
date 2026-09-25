@@ -311,6 +311,20 @@ export const deleteAdminReviewApi = async (reviewId) => {
   }
 };
 
+export const deleteUserApi = async (userId) => {
+  try {
+    const res = await axios.delete(`${API_BASE}/users/${userId}`);
+    return res.data;
+  } catch (err) {
+    console.warn("⚠️ API deleteUser error:", err.message);
+    return { success: false, message: err.message };
+  }
+};
+
+export const deleteProviderApi = async (providerId) => {
+  return deleteUserApi(providerId);
+};
+
 // --- Category Management APIs ---
 const CATEGORY_API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? 'http://localhost:5000/api/categories'

@@ -590,15 +590,72 @@ const toggleUserStatus = async (req, res) => {
     }
 };
 
-// 10. Delete User Account from Supabase database
+// 10. Delete User / Provider Account from Supabase database completely
 const deleteUserAccount = async (req, res) => {
     const { userId } = req.params;
+    if (!userId) {
+        return res.status(400).json({ success: false, error: "User ID is required" });
+    }
+
     try {
-        const { error } = await supabase.from('profiles').delete().eq('id', userId);
-        if (error) throw error;
-        res.status(200).json({ success: true, message: `User ${userId} deleted from Supabase.` });
+        console.log(`🗑️ Deleting user/provider account from database: ${userId}`);
+
+        // 1. Delete associated reviews (as provider or as reviewer)
+        try {
+            await supabase.from('reviews').delete().or(`provider_id.eq.${userId},customer_id.eq.${userId}`);
+        } catch (e) {
+            console.warn("Notice: cleaning reviews:", e.message);
+        }
+
+        // 2. Delete messages (as sender or receiver)
+        try {
+            await supabase.from('messages').delete().or(`sender_id.eq.${userId},receiver_id.eq.${userId}`);
+        } catch (e) {
+            console.warn("Notice: cleaning messages:", e.message);
+        }
+
+        // 3. Delete bookings (as provider or customer)
+        try {
+            await supabase.from('bookings').delete().or(`provider_id.eq.${userId},customer_id.eq.${userId}`);
+        } catch (e) {
+            console.warn("Notice: cleaning bookings:", e.message);
+        }
+
+        // 4. Delete provider_details record
+        try {
+            await supabase.from('provider_details').delete().eq('id', userId);
+        } catch (e) {
+            console.warn("Notice: cleaning provider_details:", e.message);
+        }
+
+        // 5. Delete from profiles
+        const { error: profileDeleteError } = await supabase.from('profiles').delete().eq('id', userId);
+        if (profileDeleteError) {
+            console.error("❌ Error deleting profile from database:", profileDeleteError.message);
+            throw profileDeleteError;
+        }
+
+        // 6. Delete from Supabase Auth if service role is available
+        const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+        if (serviceKey && process.env.SUPABASE_URL) {
+            try {
+                const { createClient } = require('@supabase/supabase-js');
+                const adminSupabase = createClient(process.env.SUPABASE_URL, serviceKey);
+                await adminSupabase.auth.admin.deleteUser(userId);
+                console.log(`✅ Auth user ${userId} deleted from Supabase Auth.`);
+            } catch (authDelErr) {
+                console.warn("Notice: deleting Supabase auth user:", authDelErr.message);
+            }
+        }
+
+        console.log(`✅ User/Provider ${userId} successfully deleted from all database tables.`);
+        return res.status(200).json({ 
+            success: true, 
+            message: `User / Provider ${userId} deleted successfully from database.` 
+        });
     } catch (err) {
-        res.status(500).json({ success: false, error: err.message });
+        console.error("❌ Delete User Account Error:", err.message);
+        return res.status(500).json({ success: false, error: err.message });
     }
 };
 
@@ -1738,13 +1795,13 @@ const checkAdminSetupStatus = async (req, res) => {
 // 15. Update Admin Profile details in Supabase database
 const updateAdminProfile = async (req, res) => {
     const { adminId } = req.params;
-    const { full_name, email, phone, avatar } = req.body;
+    const { full_name, phone, avatar, profile_image_url } = req.body;
     try {
         const updateData = {};
-        if (full_name) updateData.full_name = full_name;
-        if (email) updateData.email = email;
-        if (phone) updateData.phone = phone;
-        if (avatar) updateData.profile_image_url = avatar;
+        if (full_name) updateData.full_name = full_name.trim();
+        if (phone) updateData.phone = phone.trim();
+        const photo = avatar || profile_image_url;
+        if (photo !== undefined) updateData.profile_image_url = photo;
 
         const { data, error } = await supabase
             .from('profiles')

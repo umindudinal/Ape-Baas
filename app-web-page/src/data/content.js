@@ -262,9 +262,9 @@ export const content = {
       quickLinks: "ක්ෂණික සබැඳි",
       contactTitle: "සම්බන්ධ කරගන්න",
       address: "කොළඹ, ශ්‍රී ලංකාව",
-      phone: "+94 77 123 4567 / +94 11 234 5678",
-      email: "support@homeservice.lk",
-      copyright: "© 2026 Home Service App. All rights reserved."
+      phone: "+94 77 964 8818",
+      email: "apebaaslk@gmail.com",
+      copyright: "© 2026 Ape Baas. All rights reserved."
     }
   },
   en: {
@@ -530,9 +530,9 @@ export const content = {
       quickLinks: "Quick Links",
       contactTitle: "Contact Us",
       address: "Colombo, Sri Lanka",
-      phone: "+94 77 123 4567 / +94 11 234 5678",
-      email: "support@homeservice.lk",
-      copyright: "© 2026 Home Service App. All rights reserved."
+      phone: "+94 77 964 8818",
+      email: "apebaaslk@gmail.com",
+      copyright: "© 2026 Ape Baas. All rights reserved."
     }
   }
 };

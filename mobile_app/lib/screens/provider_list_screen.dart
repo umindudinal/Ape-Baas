@@ -120,42 +120,123 @@ class _ProviderListScreenState extends State<ProviderListScreen> {
 
           if (matchingProviders.isEmpty) {
             return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: const BoxDecoration(
-                        color: AppColors.navySubtle,
-                        shape: BoxShape.circle,
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(color: AppColors.cardBorder.withValues(alpha: 0.8)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.deepNavy.withValues(alpha: 0.05),
+                        blurRadius: 20,
+                        offset: const Offset(0, 6),
                       ),
-                      child: const Icon(Icons.person_search_rounded, size: 56, color: AppColors.deepNavy),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      '${widget.categoryName} සඳහා දැනට සේවා සපයන්නන් හමු නොවීය',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textDark),
-                    ),
-                    const SizedBox(height: 6),
-                    const Text(
-                      'මෙම කාණ්ඩයේ සේවා සපයන්නන් ලියාපදිංචි වූ පසු මෙහි පෙන්වනු ඇත.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: AppColors.textMuted, fontSize: 13),
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton.icon(
-                      onPressed: _loadProviders,
-                      icon: const Icon(Icons.refresh_rounded, color: Colors.white),
-                      label: const Text('නැවත පරීක්ෂා කරන්න', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.deepNavy,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Dual-ring Icon Badge
+                      Container(
+                        width: 90,
+                        height: 90,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            colors: [
+                              AppColors.navySubtle,
+                              AppColors.warningAmber.withValues(alpha: 0.15),
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          border: Border.all(
+                            color: AppColors.navyAccent.withValues(alpha: 0.2),
+                            width: 2,
+                          ),
+                        ),
+                        child: Center(
+                          child: Container(
+                            width: 62,
+                            height: 62,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: const LinearGradient(
+                                colors: [
+                                  AppColors.navyDark,
+                                  AppColors.deepNavy,
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.deepNavy.withValues(alpha: 0.3),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: const Icon(
+                              Icons.person_search_rounded,
+                              size: 32,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 20),
+                      Text(
+                        '${widget.categoryName} සඳහා සේවා සපයන්නන් හමු නොවීය',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 16.5,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.navyDark,
+                          letterSpacing: 0.2,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        'මෙම කාණ්ඩය සඳහා නව සේවා සපයන්නන් ලියාපදිංචි වෙමින් පවතී. කරුණාකර මද වේලාවකින් නැවත පරීක්ෂා කරන්න.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: AppColors.textMuted,
+                          fontSize: 13,
+                          height: 1.45,
+                        ),
+                      ),
+                      const SizedBox(height: 22),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 46,
+                        child: ElevatedButton.icon(
+                          onPressed: _loadProviders,
+                          icon: const Icon(Icons.refresh_rounded, color: Colors.white, size: 19),
+                          label: const Text(
+                            'නැවත පූරණය කරන්න (Refresh)',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13.5,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.deepNavy,
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );

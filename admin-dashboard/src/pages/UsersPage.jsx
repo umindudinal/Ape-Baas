@@ -97,6 +97,7 @@ const UsersPage = ({
   const [showAddProviderModal, setShowAddProviderModal] = useState(false); // Add Provider Modal
   const [rejectReason, setRejectReason] = useState('');
   const [showRejectModal, setShowRejectModal] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(null); // Delete Confirmation Modal
 
   const pendingVerifications = verifications.filter(v => v.status === 'Pending');
   const rejectedVerifications = verifications.filter(v => v.status === 'Rejected');
@@ -422,6 +423,16 @@ const UsersPage = ({
                       >
                         {prov.status === 'Active' ? <Lock className="w-4 h-4" /> : <Unlock className="w-4 h-4" />}
                       </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setShowDeleteModal(prov);
+                        }}
+                        className="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 transition-all cursor-pointer"
+                        title="Delete Provider Account Permanently"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -583,10 +594,10 @@ const UsersPage = ({
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          onDeleteUser(cust.id);
+                          setShowDeleteModal(cust);
                         }}
                         className="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 cursor-pointer"
-                        title="Remove Account"
+                        title="Delete Customer Account Permanently"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -657,6 +668,58 @@ const UsersPage = ({
                 className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs cursor-pointer shadow-sm shadow-rose-600/20"
               >
                 Confirm Rejection
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {/* DELETE USER / PROVIDER CONFIRMATION POPUP MODAL */}
+      {showDeleteModal && createPortal(
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[9999] animate-in fade-in duration-200">
+          <div className="bg-white border border-slate-200 rounded-3xl max-w-md w-full p-6 space-y-5 shadow-2xl">
+            <div className="flex items-center gap-3 border-b border-slate-200 pb-4">
+              <div className="w-10 h-10 rounded-2xl bg-rose-50 border border-rose-200 text-rose-600 flex items-center justify-center font-bold">
+                <Trash2 className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="font-bold text-slate-900 text-base">
+                  Delete {showDeleteModal.role === 'Provider' ? 'Service Provider' : 'User Account'}?
+                </h4>
+                <p className="text-xs text-slate-500 font-medium">
+                  This action will permanently delete the account from the database.
+                </p>
+              </div>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-xs text-rose-800 space-y-2">
+              <p className="font-semibold">
+                Are you sure you want to delete <span className="font-bold text-slate-900 underline">{showDeleteModal.name || showDeleteModal.full_name}</span> ({showDeleteModal.phone || showDeleteModal.email})?
+              </p>
+              <p className="text-[11px] text-slate-600">
+                All associated records (profiles, provider details, reviews, bookings, and messages) will be permanently erased from the Supabase database.
+              </p>
+            </div>
+
+            <div className="flex items-center justify-end gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => setShowDeleteModal(null)}
+                className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  onDeleteUser(showDeleteModal.id);
+                  setShowDeleteModal(null);
+                }}
+                className="px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-xs transition-all flex items-center gap-1.5 cursor-pointer"
+              >
+                <Trash2 className="w-4 h-4" />
+                <span>Yes, Delete Account</span>
               </button>
             </div>
           </div>

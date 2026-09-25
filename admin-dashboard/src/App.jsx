@@ -18,6 +18,7 @@ import {
   fetchAdminBookings,
   fetchAdminReviews,
   deleteAdminReviewApi,
+  deleteUserApi,
   approveProviderApi,
   rejectProviderApi,
   fetchCategoriesApi,
@@ -188,15 +189,37 @@ function App() {
     }));
   };
 
-  const handleDeleteUser = (userId) => {
+  const handleDeleteUser = async (userId) => {
+    // 1. Optimistically update local state for instant UI responsiveness
     setUsers(prev => prev.filter(u => u.id !== userId));
-    showToast('User account removed successfully.');
+    showToast('🗑️ Provider / User account deleted from database.');
+
+    // 2. Call backend API to permanently delete from Supabase
+    try {
+      const res = await deleteUserApi(userId);
+      if (res && res.success) {
+        console.log(`✅ Successfully deleted user/provider ${userId} from database.`);
+      } else {
+        console.warn("⚠️ Delete user database response:", res?.error || res?.message);
+      }
+    } catch (err) {
+      console.error("❌ Failed to delete user from database:", err);
+      showToast('⚠️ Could not delete account from server.');
+    }
   };
 
   const handleProviderAdded = (newProvider) => {
     if (newProvider) {
       setUsers(prev => [newProvider, ...prev.filter(u => u.id !== newProvider.id)]);
       showToast(`🎉 Provider '${newProvider.name}' successfully registered!`);
+    }
+  };
+
+  const handleUpdateUser = (updatedUser) => {
+    if (updatedUser) {
+      setCurrentUser(updatedUser);
+      localStorage.setItem('admin_user_data', JSON.stringify(updatedUser));
+      showToast('👤 Admin profile & photo updated successfully!');
     }
   };
 
@@ -286,12 +309,6 @@ function App() {
   if (!isAuthenticated) {
     return <LoginPage onLoginSuccess={handleLoginSuccess} />;
   }
-
-  const handleUpdateUser = (updatedUserData) => {
-    setCurrentUser(updatedUserData);
-    localStorage.setItem('admin_user_data', JSON.stringify(updatedUserData));
-    showToast('👤 Admin profile updated successfully!');
-  };
 
   return (
     <div className="flex min-h-screen bg-slate-50 text-slate-900 selection:bg-amber-500 selection:text-white font-sans">

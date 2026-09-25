@@ -19,11 +19,13 @@ class ProviderHomeScreen extends StatefulWidget {
 }
 
 class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
-  final GlobalKey<ProviderJobsScreenState> _jobsKey = GlobalKey<ProviderJobsScreenState>();
-  final GlobalKey<ProviderMessagesScreenState> _messagesKey = GlobalKey<ProviderMessagesScreenState>();
+  final GlobalKey<ProviderJobsScreenState> _jobsKey =
+      GlobalKey<ProviderJobsScreenState>();
+  final GlobalKey<ProviderMessagesScreenState> _messagesKey =
+      GlobalKey<ProviderMessagesScreenState>();
   int _selectedIndex = 0;
   Future<List<dynamic>>? _bookingsFuture;
-  
+
   String _providerName = '';
   String _profileImageUrl = '';
   double _avgRating = 0.0;
@@ -70,11 +72,14 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
     }
     final Uri launchUri = Uri.parse('tel:$cleanPhone');
     try {
-      final launched = await launchUrl(launchUri, mode: LaunchMode.externalApplication);
+      final launched = await launchUrl(
+        launchUri,
+        mode: LaunchMode.externalApplication,
+      );
       if (!launched && mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('දුරකථන අංකය: $phoneNumber')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('දුරකථන අංකය: $phoneNumber')));
       }
     } catch (e) {
       debugPrint("Could not launch phone call: $e");
@@ -107,9 +112,12 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
           _totalReviews = reviewsRes['total_reviews'] ?? 0;
           if (details != null) {
             _isVerified = details['is_verified'] ?? false;
-            _verificationStatus = details['verification_status'] ?? (details['is_verified'] == true ? 'Approved' : 'Pending');
+            _verificationStatus =
+                details['verification_status'] ??
+                (details['is_verified'] == true ? 'Approved' : 'Pending');
             _rejectionReason = details['rejection_reason'] ?? '';
-            if (details['profile_image_url'] != null && details['profile_image_url'].toString().isNotEmpty) {
+            if (details['profile_image_url'] != null &&
+                details['profile_image_url'].toString().isNotEmpty) {
               _profileImageUrl = details['profile_image_url'];
             }
           }
@@ -148,13 +156,16 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(22),
-          border: Border.all(color: AppColors.errorRed.withValues(alpha: 0.35), width: 1.2),
+          border: Border.all(
+            color: AppColors.errorRed.withValues(alpha: 0.35),
+            width: 1.2,
+          ),
           boxShadow: [
             BoxShadow(
               color: AppColors.errorRed.withValues(alpha: 0.08),
               blurRadius: 15,
               offset: const Offset(0, 4),
-            )
+            ),
           ],
         ),
         child: Column(
@@ -168,7 +179,11 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                     color: AppColors.errorRed,
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.gpp_bad_rounded, color: Colors.white, size: 20),
+                  child: const Icon(
+                    Icons.gpp_bad_rounded,
+                    color: Colors.white,
+                    size: 20,
+                  ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -186,7 +201,11 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                       const SizedBox(height: 2),
                       Text(
                         'Verification Status: Rejected',
-                        style: TextStyle(fontSize: 11, color: Colors.red.shade700, fontWeight: FontWeight.w500),
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: Colors.red.shade700,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ],
                   ),
@@ -207,12 +226,22 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                 children: [
                   Text(
                     'ප්‍රතික්ෂේප කිරීමට හේතුව:',
-                    style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.bold, color: Colors.red.shade900),
+                    style: TextStyle(
+                      fontSize: 11.5,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red.shade900,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    _rejectionReason.isNotEmpty ? _rejectionReason : 'ලියකියවිලි හෝ NIC ඡායාරූප තහවුරු කිරීමට නොහැකි විය.',
-                    style: const TextStyle(fontSize: 12.5, color: AppColors.textDark, height: 1.4),
+                    _rejectionReason.isNotEmpty
+                        ? _rejectionReason
+                        : 'ලියකියවිලි හෝ NIC ඡායාරූප තහවුරු කිරීමට නොහැකි විය.',
+                    style: const TextStyle(
+                      fontSize: 12.5,
+                      color: AppColors.textDark,
+                      height: 1.4,
+                    ),
                   ),
                 ],
               ),
@@ -233,13 +262,16 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(22),
-          border: Border.all(color: AppColors.warningAmber.withValues(alpha: 0.4), width: 1.2),
+          border: Border.all(
+            color: AppColors.warningAmber.withValues(alpha: 0.4),
+            width: 1.2,
+          ),
           boxShadow: [
             BoxShadow(
               color: AppColors.warningAmber.withValues(alpha: 0.1),
               blurRadius: 15,
               offset: const Offset(0, 4),
-            )
+            ),
           ],
         ),
         child: Row(
@@ -250,7 +282,11 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                 color: AppColors.warningAmber.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.hourglass_top_rounded, color: Color(0xFFB45309), size: 22),
+              child: const Icon(
+                Icons.hourglass_top_rounded,
+                color: Color(0xFFB45309),
+                size: 22,
+              ),
             ),
             const SizedBox(width: 14),
             Expanded(
@@ -259,12 +295,20 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                 children: const [
                   Text(
                     'ගිණුම් අනුමැතිය (Pending Approval)',
-                    style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold, color: Color(0xFF78350F)),
+                    style: TextStyle(
+                      fontSize: 13.5,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF78350F),
+                    ),
                   ),
                   SizedBox(height: 3),
                   Text(
                     'ඔබගේ ගිණුම සක්‍රිය කිරීම සඳහා Admin අනුමැතිය ලැබෙන තෙක් රැඳී සිටින්න.',
-                    style: TextStyle(fontSize: 11.5, color: Color(0xFF92400E), height: 1.35),
+                    style: TextStyle(
+                      fontSize: 11.5,
+                      color: Color(0xFF92400E),
+                      height: 1.35,
+                    ),
                   ),
                 ],
               ),
@@ -306,7 +350,11 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                 shape: BoxShape.circle,
                 border: Border.all(color: Colors.white.withValues(alpha: 0.25)),
               ),
-              child: const Icon(Icons.workspace_premium_rounded, color: Colors.amber, size: 26),
+              child: const Icon(
+                Icons.workspace_premium_rounded,
+                color: Colors.amber,
+                size: 26,
+              ),
             ),
             const SizedBox(width: 14),
             const Expanded(
@@ -315,12 +363,20 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                 children: [
                   Text(
                     'වෘත්තීය සේවා විශිෂ්ටත්වය',
-                    style: TextStyle(fontSize: 14.5, fontWeight: FontWeight.bold, color: Colors.white),
+                    style: TextStyle(
+                      fontSize: 14.5,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                   SizedBox(height: 4),
                   Text(
                     'ගුණාත්මක සේවාවක් සපයා පාරිභෝගිකයින්ගෙන් 5-Star Ratings ලබා ගන්න.',
-                    style: TextStyle(fontSize: 11.5, color: Colors.white70, height: 1.3),
+                    style: TextStyle(
+                      fontSize: 11.5,
+                      color: Colors.white70,
+                      height: 1.3,
+                    ),
                   ),
                 ],
               ),
@@ -349,10 +405,19 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
               ),
               child: Container(
                 width: double.infinity,
-                padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).padding.top + 16, 20, 26),
+                padding: EdgeInsets.fromLTRB(
+                  20,
+                  MediaQuery.of(context).padding.top + 16,
+                  20,
+                  26,
+                ),
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [AppColors.navyDark, Color(0xFF0F2642), Color(0xFF1E3A8A)],
+                    colors: [
+                      AppColors.navyDark,
+                      Color(0xFF0F2642),
+                      Color(0xFF1E3A8A),
+                    ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -372,11 +437,16 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                       children: [
                         Flexible(
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 5,
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.white.withValues(alpha: 0.15),
                               borderRadius: BorderRadius.circular(20),
-                              border: Border.all(color: Colors.white.withValues(alpha: 0.25)),
+                              border: Border.all(
+                                color: Colors.white.withValues(alpha: 0.25),
+                              ),
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -401,7 +471,12 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                                   child: Text(
                                     'අපේ බාස් Pro Portal',
                                     overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 0.2),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 0.2,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -417,20 +492,37 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                             });
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(_isOnline ? '🟢 ඔබ සේවයේ නිරතයි (Online)' : '🔴 ඔබ විවේකයේ පසුවේ (Offline)'),
-                                backgroundColor: _isOnline ? AppColors.successGreen : AppColors.navyDark,
+                                content: Text(
+                                  _isOnline
+                                      ? '🟢 ඔබ සේවයේ නිරතයි (Online)'
+                                      : '🔴 ඔබ විවේකයේ පසුවේ (Offline)',
+                                ),
+                                backgroundColor: _isOnline
+                                    ? AppColors.successGreen
+                                    : AppColors.navyDark,
                                 duration: const Duration(seconds: 2),
                               ),
                             );
                           },
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 250),
-                            padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 11,
+                              vertical: 5,
+                            ),
                             decoration: BoxDecoration(
-                              color: _isOnline ? const Color(0xFF10B981).withValues(alpha: 0.2) : Colors.white.withValues(alpha: 0.12),
+                              color: _isOnline
+                                  ? const Color(
+                                      0xFF10B981,
+                                    ).withValues(alpha: 0.2)
+                                  : Colors.white.withValues(alpha: 0.12),
                               borderRadius: BorderRadius.circular(20),
                               border: Border.all(
-                                color: _isOnline ? const Color(0xFF10B981).withValues(alpha: 0.5) : Colors.white.withValues(alpha: 0.25),
+                                color: _isOnline
+                                    ? const Color(
+                                        0xFF10B981,
+                                      ).withValues(alpha: 0.5)
+                                    : Colors.white.withValues(alpha: 0.25),
                               ),
                             ),
                             child: Row(
@@ -441,10 +533,18 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                                   width: 8,
                                   height: 8,
                                   decoration: BoxDecoration(
-                                    color: _isOnline ? const Color(0xFF10B981) : Colors.amber,
+                                    color: _isOnline
+                                        ? const Color(0xFF10B981)
+                                        : Colors.amber,
                                     shape: BoxShape.circle,
                                     boxShadow: _isOnline
-                                        ? [const BoxShadow(color: Color(0xFF10B981), blurRadius: 6, spreadRadius: 1)]
+                                        ? [
+                                            const BoxShadow(
+                                              color: Color(0xFF10B981),
+                                              blurRadius: 6,
+                                              spreadRadius: 1,
+                                            ),
+                                          ]
                                         : null,
                                   ),
                                 ),
@@ -452,7 +552,9 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                                 Text(
                                   _isOnline ? 'සේවයේ (Online)' : 'විවේකයේ',
                                   style: TextStyle(
-                                    color: _isOnline ? const Color(0xFF10B981) : Colors.white70,
+                                    color: _isOnline
+                                        ? const Color(0xFF10B981)
+                                        : Colors.white70,
                                     fontSize: 11,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -475,7 +577,9 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                                 children: [
                                   Flexible(
                                     child: Text(
-                                      _providerName.isNotEmpty ? _providerName : 'සේවා සපයන්නා',
+                                      _providerName.isNotEmpty
+                                          ? _providerName
+                                          : 'සේවා සපයන්නා',
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
                                         color: Colors.white,
@@ -487,7 +591,11 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                                   ),
                                   if (_isVerified) ...[
                                     const SizedBox(width: 6),
-                                    const Icon(Icons.verified_rounded, color: Color(0xFF10B981), size: 22),
+                                    const Icon(
+                                      Icons.verified_rounded,
+                                      color: Color(0xFF10B981),
+                                      size: 22,
+                                    ),
                                   ],
                                 ],
                               ),
@@ -495,20 +603,37 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                               Row(
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 9,
+                                      vertical: 4,
+                                    ),
                                     decoration: BoxDecoration(
-                                      color: Colors.amber.withValues(alpha: 0.25),
+                                      color: Colors.amber.withValues(
+                                        alpha: 0.25,
+                                      ),
                                       borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(color: Colors.amber.withValues(alpha: 0.45)),
+                                      border: Border.all(
+                                        color: Colors.amber.withValues(
+                                          alpha: 0.45,
+                                        ),
+                                      ),
                                     ),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        const Icon(Icons.star_rounded, color: Colors.amber, size: 16),
+                                        const Icon(
+                                          Icons.star_rounded,
+                                          color: Colors.amber,
+                                          size: 16,
+                                        ),
                                         const SizedBox(width: 4),
                                         Text(
                                           _avgRating.toStringAsFixed(1),
-                                          style: const TextStyle(color: Colors.amber, fontSize: 12.5, fontWeight: FontWeight.bold),
+                                          style: const TextStyle(
+                                            color: Colors.amber,
+                                            fontSize: 12.5,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -518,7 +643,11 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                                     child: Text(
                                       '($_totalReviews Reviews)',
                                       overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.w500),
+                                      style: const TextStyle(
+                                        color: Colors.white70,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -536,8 +665,14 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                                 shape: BoxShape.circle,
                                 gradient: LinearGradient(
                                   colors: _isVerified
-                                      ? [const Color(0xFF10B981), const Color(0xFF059669)]
-                                      : [Colors.white.withValues(alpha: 0.6), Colors.white.withValues(alpha: 0.2)],
+                                      ? [
+                                          const Color(0xFF10B981),
+                                          const Color(0xFF059669),
+                                        ]
+                                      : [
+                                          Colors.white.withValues(alpha: 0.6),
+                                          Colors.white.withValues(alpha: 0.2),
+                                        ],
                                 ),
                                 boxShadow: [
                                   BoxShadow(
@@ -550,11 +685,20 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                               child: CircleAvatar(
                                 radius: 30,
                                 backgroundColor: AppColors.navyLight,
-                                backgroundImage: _getImageProvider(_profileImageUrl),
-                                child: _getImageProvider(_profileImageUrl) == null
+                                backgroundImage: _getImageProvider(
+                                  _profileImageUrl,
+                                ),
+                                child:
+                                    _getImageProvider(_profileImageUrl) == null
                                     ? Text(
-                                        _providerName.isNotEmpty ? _providerName[0].toUpperCase() : 'P',
-                                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22),
+                                        _providerName.isNotEmpty
+                                            ? _providerName[0].toUpperCase()
+                                            : 'P',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 22,
+                                        ),
                                       )
                                     : null,
                               ),
@@ -615,14 +759,21 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                       ),
                       const SizedBox(width: 8),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 3,
+                        ),
                         decoration: BoxDecoration(
                           color: AppColors.navySubtle,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: const Text(
                           'සජීවී දත්ත',
-                          style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.bold, color: AppColors.deepNavy),
+                          style: TextStyle(
+                            fontSize: 10.5,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.deepNavy,
+                          ),
                         ),
                       ),
                     ],
@@ -671,10 +822,16 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                         child: _buildStatCard(
                           title: 'සේවා තත්ත්වය',
                           value: _isOnline ? 'සක්‍රියයි' : 'විවේකයේ',
-                          subtitle: _isOnline ? 'ඉල්ලීම් භාරගත හැක' : 'තාවකාලිකව නවතා ඇත',
+                          subtitle: _isOnline
+                              ? 'ඉල්ලීම් භාරගත හැක'
+                              : 'තාවකාලිකව නවතා ඇත',
                           icon: Icons.sensors_rounded,
-                          color: _isOnline ? const Color(0xFF10B981) : Colors.grey.shade700,
-                          bgColor: _isOnline ? const Color(0xFFECFDF5) : Colors.grey.shade100,
+                          color: _isOnline
+                              ? const Color(0xFF10B981)
+                              : Colors.grey.shade700,
+                          bgColor: _isOnline
+                              ? const Color(0xFFECFDF5)
+                              : Colors.grey.shade100,
                         ),
                       ),
                     ],
@@ -709,14 +866,21 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                   ),
                   const SizedBox(width: 8),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: AppColors.navySubtle,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Text(
                       'සක්‍රිය',
-                      style: TextStyle(color: AppColors.deepNavy, fontSize: 11, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        color: AppColors.deepNavy,
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],
@@ -733,7 +897,11 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Padding(
                       padding: EdgeInsets.all(40.0),
-                      child: Center(child: CircularProgressIndicator(color: AppColors.deepNavy)),
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.deepNavy,
+                        ),
+                      ),
                     );
                   } else if (snapshot.hasError) {
                     return Container(
@@ -741,16 +909,25 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                       decoration: BoxDecoration(
                         color: const Color(0xFFFFF1F2),
                         borderRadius: BorderRadius.circular(18),
-                        border: Border.all(color: AppColors.errorRed.withValues(alpha: 0.2)),
+                        border: Border.all(
+                          color: AppColors.errorRed.withValues(alpha: 0.2),
+                        ),
                       ),
                       child: Row(
                         children: const [
-                          Icon(Icons.error_outline_rounded, color: AppColors.errorRed),
+                          Icon(
+                            Icons.error_outline_rounded,
+                            color: AppColors.errorRed,
+                          ),
                           SizedBox(width: 12),
                           Expanded(
                             child: Text(
                               'දත්ත ලබා ගැනීමේ ගැටළුවක්! කරුණාකර නැවත උත්සාහ කරන්න.',
-                              style: TextStyle(color: AppColors.errorRed, fontSize: 12.5, fontWeight: FontWeight.w600),
+                              style: TextStyle(
+                                color: AppColors.errorRed,
+                                fontSize: 12.5,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ],
@@ -763,9 +940,15 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(24),
-                        border: Border.all(color: AppColors.cardBorder.withValues(alpha: 0.6)),
+                        border: Border.all(
+                          color: AppColors.cardBorder.withValues(alpha: 0.6),
+                        ),
                         boxShadow: [
-                          BoxShadow(color: AppColors.deepNavy.withValues(alpha: 0.04), blurRadius: 15, offset: const Offset(0, 4)),
+                          BoxShadow(
+                            color: AppColors.deepNavy.withValues(alpha: 0.04),
+                            blurRadius: 15,
+                            offset: const Offset(0, 4),
+                          ),
                         ],
                       ),
                       child: Column(
@@ -776,17 +959,28 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                               color: AppColors.navySubtle,
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(Icons.inbox_rounded, size: 42, color: AppColors.deepNavy),
+                            child: const Icon(
+                              Icons.inbox_rounded,
+                              size: 42,
+                              color: AppColors.deepNavy,
+                            ),
                           ),
                           const SizedBox(height: 14),
                           const Text(
                             'දැනට නව ඉල්ලීම් නොමැත',
-                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textDark),
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.textDark,
+                            ),
                           ),
                           const SizedBox(height: 5),
                           const Text(
                             'පාරිභෝගිකයින් සේවා ඉල්ලූ වහාම මෙහි පෙන්වනු ඇත.',
-                            style: TextStyle(color: AppColors.textMuted, fontSize: 12),
+                            style: TextStyle(
+                              color: AppColors.textMuted,
+                              fontSize: 12,
+                            ),
                             textAlign: TextAlign.center,
                           ),
                         ],
@@ -812,7 +1006,9 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                             border: Border.all(color: AppColors.cardBorder),
                             boxShadow: [
                               BoxShadow(
-                                color: AppColors.deepNavy.withValues(alpha: 0.05),
+                                color: AppColors.deepNavy.withValues(
+                                  alpha: 0.05,
+                                ),
                                 blurRadius: 15,
                                 offset: const Offset(0, 4),
                               ),
@@ -830,15 +1026,21 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                                       color: AppColors.navySubtle,
                                       borderRadius: BorderRadius.circular(14),
                                     ),
-                                    child: const Icon(Icons.handyman_rounded, color: AppColors.deepNavy, size: 22),
+                                    child: const Icon(
+                                      Icons.handyman_rounded,
+                                      color: AppColors.deepNavy,
+                                      size: 22,
+                                    ),
                                   ),
                                   const SizedBox(width: 12),
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          booking['issue'] ?? 'ගැටළුව සඳහන් කර නැත',
+                                          booking['issue'] ??
+                                              'ගැටළුව සඳහන් කර නැත',
                                           style: const TextStyle(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold,
@@ -848,13 +1050,21 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                                         const SizedBox(height: 5),
                                         Row(
                                           children: [
-                                            const Icon(Icons.location_on_rounded, size: 14, color: AppColors.navyLight),
+                                            const Icon(
+                                              Icons.location_on_rounded,
+                                              size: 14,
+                                              color: AppColors.navyLight,
+                                            ),
                                             const SizedBox(width: 4),
                                             Expanded(
                                               child: Text(
-                                                booking['address'] ?? 'ලිපිනය නොමැත',
+                                                booking['address'] ??
+                                                    'ලිපිනය නොමැත',
                                                 overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(color: AppColors.textMuted, fontSize: 12),
+                                                style: const TextStyle(
+                                                  color: AppColors.textMuted,
+                                                  fontSize: 12,
+                                                ),
                                               ),
                                             ),
                                           ],
@@ -866,21 +1076,34 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                               ),
                               const Padding(
                                 padding: EdgeInsets.symmetric(vertical: 12),
-                                child: Divider(height: 1, color: Color(0xFFEEF2F6)),
+                                child: Divider(
+                                  height: 1,
+                                  color: Color(0xFFEEF2F6),
+                                ),
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
                                     child: Row(
                                       children: [
-                                        const Icon(Icons.calendar_today_rounded, size: 13, color: AppColors.navyAccent),
+                                        const Icon(
+                                          Icons.calendar_today_rounded,
+                                          size: 13,
+                                          color: AppColors.navyAccent,
+                                        ),
                                         const SizedBox(width: 5),
                                         Expanded(
                                           child: Text(
-                                            booking['service_date'] ?? 'දිනය නොමැත',
+                                            booking['service_date'] ??
+                                                'දිනය නොමැත',
                                             overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(color: AppColors.textMuted, fontSize: 11.5, fontWeight: FontWeight.w600),
+                                            style: const TextStyle(
+                                              color: AppColors.textMuted,
+                                              fontSize: 11.5,
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -888,13 +1111,33 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                                   ),
                                   const SizedBox(width: 8),
                                   OutlinedButton.icon(
-                                    onPressed: () => _showRequestDetailsDialog(booking),
-                                    icon: const Icon(Icons.info_outline_rounded, size: 15, color: AppColors.deepNavy),
-                                    label: const Text('විස්තර', style: TextStyle(color: AppColors.deepNavy, fontWeight: FontWeight.bold, fontSize: 12)),
+                                    onPressed: () =>
+                                        _showRequestDetailsDialog(booking),
+                                    icon: const Icon(
+                                      Icons.info_outline_rounded,
+                                      size: 15,
+                                      color: AppColors.deepNavy,
+                                    ),
+                                    label: const Text(
+                                      'විස්තර',
+                                      style: TextStyle(
+                                        color: AppColors.deepNavy,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12,
+                                      ),
+                                    ),
                                     style: OutlinedButton.styleFrom(
-                                      side: const BorderSide(color: AppColors.deepNavy, width: 1.2),
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                      side: const BorderSide(
+                                        color: AppColors.deepNavy,
+                                        width: 1.2,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 10,
+                                        vertical: 8,
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(width: 6),
@@ -904,36 +1147,70 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                                       borderRadius: BorderRadius.circular(12),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: AppColors.successGreen.withValues(alpha: 0.3),
+                                          color: AppColors.successGreen
+                                              .withValues(alpha: 0.3),
                                           blurRadius: 8,
                                           offset: const Offset(0, 3),
-                                        )
+                                        ),
                                       ],
                                     ),
                                     child: ElevatedButton.icon(
                                       onPressed: () async {
-                                        final result = await ApiService.acceptBooking(booking['id'].toString());
+                                        final result =
+                                            await ApiService.acceptBooking(
+                                              booking['id'].toString(),
+                                            );
 
                                         if (!context.mounted) return;
                                         if (result['success']) {
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            SnackBar(content: Text(result['message']), backgroundColor: AppColors.successGreen),
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(result['message']),
+                                              backgroundColor:
+                                                  AppColors.successGreen,
+                                            ),
                                           );
                                           _loadBookings();
                                           _loadProviderInfo();
                                         } else {
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            SnackBar(content: Text(result['message']), backgroundColor: AppColors.errorRed),
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(result['message']),
+                                              backgroundColor:
+                                                  AppColors.errorRed,
+                                            ),
                                           );
                                         }
                                       },
-                                      icon: const Icon(Icons.check_circle_rounded, size: 16, color: Colors.white),
-                                      label: const Text('භාරගන්න', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12.5)),
+                                      icon: const Icon(
+                                        Icons.check_circle_rounded,
+                                        size: 16,
+                                        color: Colors.white,
+                                      ),
+                                      label: const Text(
+                                        'භාරගන්න',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12.5,
+                                        ),
+                                      ),
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.transparent,
                                         shadowColor: Colors.transparent,
-                                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical: 8,
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -956,14 +1233,26 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
   }
 
   void _showRequestDetailsDialog(Map<String, dynamic> booking) {
-    final customerName = booking['customer_name'] ?? booking['customer']?['full_name'] ?? 'පාරිභෝගිකයා';
-    final customerPhone = booking['customer_phone'] ?? booking['customer']?['phone'] ?? 'නොමැත';
-    final customerImgStr = (booking['customer_image_url'] ?? (booking['customer'] != null ? booking['customer']['profile_image_url'] : '') ?? '').toString();
+    final customerName =
+        booking['customer_name'] ??
+        booking['customer']?['full_name'] ??
+        'පාරිභෝගිකයා';
+    final customerPhone =
+        booking['customer_phone'] ?? booking['customer']?['phone'] ?? 'නොමැත';
+    final customerImgStr =
+        (booking['customer_image_url'] ??
+                (booking['customer'] != null
+                    ? booking['customer']['profile_image_url']
+                    : '') ??
+                '')
+            .toString();
     final custImgProvider = _getImageProvider(customerImgStr);
     final issue = booking['issue'] ?? 'විස්තර සඳහන් කර නැත';
     final address = booking['address'] ?? 'ලිපිනය නොමැත';
     final date = booking['service_date'] ?? 'දිනය නොමැත';
-    final createdAt = booking['created_at'] != null ? booking['created_at'].toString().split('T')[0] : '';
+    final createdAt = booking['created_at'] != null
+        ? booking['created_at'].toString().split('T')[0]
+        : '';
     final bookingId = (booking['id'] ?? '').toString();
 
     showDialog(
@@ -990,7 +1279,11 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                   color: Colors.white.withValues(alpha: 0.15),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.handyman_rounded, color: Colors.white, size: 22),
+                child: const Icon(
+                  Icons.handyman_rounded,
+                  color: Colors.white,
+                  size: 22,
+                ),
               ),
               const SizedBox(width: 12),
               const Expanded(
@@ -999,7 +1292,11 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                   children: [
                     Text(
                       'නව සේවා ඉල්ලීමේ විස්තර',
-                      style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     SizedBox(height: 2),
                     Text(
@@ -1010,7 +1307,11 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                 ),
               ),
               IconButton(
-                icon: const Icon(Icons.close_rounded, color: Colors.white70, size: 22),
+                icon: const Icon(
+                  Icons.close_rounded,
+                  color: Colors.white70,
+                  size: 22,
+                ),
                 onPressed: () => Navigator.pop(ctx),
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),
@@ -1037,7 +1338,14 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('පාරිභෝගිකයාගේ විස්තර (Customer Info):', style: TextStyle(fontSize: 11, color: AppColors.textMuted, fontWeight: FontWeight.bold)),
+                      const Text(
+                        'පාරිභෝගිකයාගේ විස්තර (Customer Info):',
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: AppColors.textMuted,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       const SizedBox(height: 8),
                       Row(
                         children: [
@@ -1047,8 +1355,14 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                             backgroundImage: custImgProvider,
                             child: custImgProvider == null
                                 ? Text(
-                                    customerName.isNotEmpty ? customerName[0].toUpperCase() : 'C',
-                                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: AppColors.deepNavy),
+                                    customerName.isNotEmpty
+                                        ? customerName[0].toUpperCase()
+                                        : 'C',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      color: AppColors.deepNavy,
+                                    ),
                                   )
                                 : null,
                           ),
@@ -1059,21 +1373,35 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                               children: [
                                 Text(
                                   customerName,
-                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15.5, color: AppColors.navyDark),
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15.5,
+                                    color: AppColors.navyDark,
+                                  ),
                                 ),
-                                if (customerPhone.isNotEmpty && customerPhone != 'නොමැත') ...[
+                                if (customerPhone.isNotEmpty &&
+                                    customerPhone != 'නොමැත') ...[
                                   const SizedBox(height: 2),
                                   Text(
                                     '📞 $customerPhone',
-                                    style: const TextStyle(fontSize: 12.5, color: AppColors.textMuted, fontWeight: FontWeight.w500),
+                                    style: const TextStyle(
+                                      fontSize: 12.5,
+                                      color: AppColors.textMuted,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
                                 ],
                               ],
                             ),
                           ),
-                          if (customerPhone.isNotEmpty && customerPhone != 'නොමැත')
+                          if (customerPhone.isNotEmpty &&
+                              customerPhone != 'නොමැත')
                             IconButton.filledTonal(
-                              icon: const Icon(Icons.phone_in_talk_rounded, color: AppColors.successGreen, size: 20),
+                              icon: const Icon(
+                                Icons.phone_in_talk_rounded,
+                                color: AppColors.successGreen,
+                                size: 20,
+                              ),
                               onPressed: () => _makePhoneCall(customerPhone),
                               style: IconButton.styleFrom(
                                 backgroundColor: const Color(0xFFECFDF5),
@@ -1089,7 +1417,14 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                 const SizedBox(height: 16),
 
                 // Request Details Section Card
-                const Text('ඉල්ලීමේ සම්පූර්ණ විස්තර (Service Details):', style: TextStyle(fontSize: 12, color: AppColors.textDark, fontWeight: FontWeight.bold)),
+                const Text(
+                  'ඉල්ලීමේ සම්පූර්ණ විස්තර (Service Details):',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textDark,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 const SizedBox(height: 8),
                 Container(
                   padding: const EdgeInsets.all(14),
@@ -1100,23 +1435,39 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                   ),
                   child: Column(
                     children: [
-                      _buildDetailItem(Icons.handyman_rounded, 'අවශ්‍යතාව / ගැටලුව', issue),
+                      _buildDetailItem(
+                        Icons.handyman_rounded,
+                        'අවශ්‍යතාව / ගැටලුව',
+                        issue,
+                      ),
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         child: Divider(height: 1, color: Color(0xFFF1F5F9)),
                       ),
-                      _buildDetailItem(Icons.calendar_month_rounded, 'සේවාව අවශ්‍ය දිනය', date),
+                      _buildDetailItem(
+                        Icons.calendar_month_rounded,
+                        'සේවාව අවශ්‍ය දිනය',
+                        date,
+                      ),
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         child: Divider(height: 1, color: Color(0xFFF1F5F9)),
                       ),
-                      _buildDetailItem(Icons.location_on_rounded, 'සේවා ස්ථානය / ලිපිනය', address),
+                      _buildDetailItem(
+                        Icons.location_on_rounded,
+                        'සේවා ස්ථානය / ලිපිනය',
+                        address,
+                      ),
                       if (createdAt.isNotEmpty) ...[
                         const Padding(
                           padding: EdgeInsets.symmetric(vertical: 10),
                           child: Divider(height: 1, color: Color(0xFFF1F5F9)),
                         ),
-                        _buildDetailItem(Icons.access_time_rounded, 'ඉල්ලීම ලැබුණු දිනය', createdAt),
+                        _buildDetailItem(
+                          Icons.access_time_rounded,
+                          'ඉල්ලීම ලැබුණු දිනය',
+                          createdAt,
+                        ),
                       ],
                     ],
                   ),
@@ -1132,11 +1483,23 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                 child: OutlinedButton(
                   onPressed: () => Navigator.pop(ctx),
                   style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: AppColors.cardBorder, width: 1.2),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    side: const BorderSide(
+                      color: AppColors.cardBorder,
+                      width: 1.2,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
                     padding: const EdgeInsets.symmetric(vertical: 12),
                   ),
-                  child: const Text('වහන්න (Close)', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.textMuted, fontSize: 13)),
+                  child: const Text(
+                    'වහන්න (Close)',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textMuted,
+                      fontSize: 13,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(width: 10),
@@ -1148,21 +1511,40 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                     if (!mounted) return;
                     if (result['success']) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(result['message']), backgroundColor: AppColors.successGreen),
+                        SnackBar(
+                          content: Text(result['message']),
+                          backgroundColor: AppColors.successGreen,
+                        ),
                       );
                       _loadBookings();
                       _loadProviderInfo();
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(result['message']), backgroundColor: AppColors.errorRed),
+                        SnackBar(
+                          content: Text(result['message']),
+                          backgroundColor: AppColors.errorRed,
+                        ),
                       );
                     }
                   },
-                  icon: const Icon(Icons.check_circle_rounded, size: 18, color: Colors.white),
-                  label: const Text('වැඩේ භාරගන්න', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 13.5)),
+                  icon: const Icon(
+                    Icons.check_circle_rounded,
+                    size: 18,
+                    color: Colors.white,
+                  ),
+                  label: const Text(
+                    'වැඩේ භාරගන්න',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 13.5,
+                    ),
+                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.successGreen,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
                     padding: const EdgeInsets.symmetric(vertical: 12),
                   ),
                 ),
@@ -1184,9 +1566,24 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(label, style: const TextStyle(fontSize: 11, color: AppColors.textMuted, fontWeight: FontWeight.bold)),
+              Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 11,
+                  color: AppColors.textMuted,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               const SizedBox(height: 3),
-              Text(value, style: const TextStyle(fontSize: 13.5, color: AppColors.navyDark, fontWeight: FontWeight.w600, height: 1.3)),
+              Text(
+                value,
+                style: const TextStyle(
+                  fontSize: 13.5,
+                  color: AppColors.navyDark,
+                  fontWeight: FontWeight.w600,
+                  height: 1.3,
+                ),
+              ),
             ],
           ),
         ),
@@ -1218,7 +1615,11 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                       child: Text(
                         'අපේ බාස් Provider',
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
                   ],
@@ -1231,14 +1632,21 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                         icon: Stack(
                           clipBehavior: Clip.none,
                           children: [
-                            const Icon(Icons.notifications_none_rounded, color: Colors.white, size: 23),
+                            const Icon(
+                              Icons.notifications_none_rounded,
+                              color: Colors.white,
+                              size: 23,
+                            ),
                             if (unreadCount > 0)
                               Positioned(
                                 right: -4,
                                 top: -4,
                                 child: Container(
                                   padding: const EdgeInsets.all(3),
-                                  constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
+                                  constraints: const BoxConstraints(
+                                    minWidth: 16,
+                                    minHeight: 16,
+                                  ),
                                   decoration: const BoxDecoration(
                                     color: Color(0xFFEF4444),
                                     shape: BoxShape.circle,
@@ -1261,7 +1669,10 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const NotificationsScreen(role: 'provider')),
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const NotificationsScreen(role: 'provider'),
+                            ),
                           );
                         },
                       );
@@ -1289,7 +1700,14 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
   Widget _buildBottomNavigationBar() {
     return Container(
       color: Colors.transparent,
-      padding: EdgeInsets.fromLTRB(16, 4, 16, MediaQuery.of(context).padding.bottom > 0 ? MediaQuery.of(context).padding.bottom + 4 : 12),
+      padding: EdgeInsets.fromLTRB(
+        16,
+        4,
+        16,
+        MediaQuery.of(context).padding.bottom > 0
+            ? MediaQuery.of(context).padding.bottom + 4
+            : 12,
+      ),
       child: Container(
         height: 64,
         decoration: BoxDecoration(
@@ -1363,10 +1781,15 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
             ? const EdgeInsets.symmetric(horizontal: 16, vertical: 8)
             : const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.white.withValues(alpha: 0.16) : Colors.transparent,
+          color: isSelected
+              ? Colors.white.withValues(alpha: 0.16)
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
           border: isSelected
-              ? Border.all(color: Colors.white.withValues(alpha: 0.25), width: 1)
+              ? Border.all(
+                  color: Colors.white.withValues(alpha: 0.25),
+                  width: 1,
+                )
               : null,
         ),
         child: Row(
@@ -1433,14 +1856,22 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
             title,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(color: AppColors.textMuted, fontSize: 11.5, fontWeight: FontWeight.w600),
+            style: const TextStyle(
+              color: AppColors.textMuted,
+              fontSize: 11.5,
+              fontWeight: FontWeight.w600,
+            ),
           ),
           const SizedBox(height: 3),
           Text(
             value,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: color),
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
           ),
           const SizedBox(height: 2),
           Text(
