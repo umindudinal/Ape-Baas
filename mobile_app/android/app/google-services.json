@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "509950655921",
+    "project_id": "honda-baas",
+    "storage_bucket": "honda-baas.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:509950655921:android:d05c1e2d1fb6f6f7ca1190",
+        "android_client_info": {
+          "package_name": "com.example.mobile_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnc94YhMXqupbzD50BZli2Bt5ICmXQzeI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
