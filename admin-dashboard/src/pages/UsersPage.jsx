@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { 
-  Users, 
-  UserCheck, 
-  ShieldAlert, 
-  CheckCircle2, 
-  XCircle, 
-  Eye, 
-  Search, 
-  Lock, 
-  Unlock, 
+  Users,
+  UserCheck,
+  ShieldAlert,
+  CheckCircle2,
+  XCircle,
+  Eye,
+  Search,
+  Lock,
+  Unlock,
   Trash2,
   UserPlus
 } from 'lucide-react';
@@ -209,15 +209,6 @@ const UsersPage = ({
               className="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-50 text-slate-900 rounded-xl border border-slate-300 focus:bg-white focus:outline-none focus:border-amber-500 font-medium placeholder:text-slate-400"
             />
           </div>
-
-          <button
-            onClick={() => setShowAddProviderModal(true)}
-            className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs flex items-center gap-1.5 shadow-sm transition-all cursor-pointer whitespace-nowrap shrink-0"
-            title="Add a new service provider directly"
-          >
-            <UserPlus className="w-4 h-4" />
-            <span>+ Add Provider</span>
-          </button>
         </div>
       </div>
 

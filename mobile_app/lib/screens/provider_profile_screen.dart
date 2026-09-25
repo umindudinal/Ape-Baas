@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
@@ -10,8 +8,6 @@ import 'package:image_cropper/image_cropper.dart';
 import '../services/api_service.dart';
 import '../utils/app_colors.dart';
 import 'edit_profile_screen.dart';
-import 'role_selection_screen.dart';
-import 'settings_screen.dart';
 
 class ProviderProfileScreen extends StatefulWidget {
   const ProviderProfileScreen({super.key});
@@ -39,11 +35,6 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
   bool _isLoading = true;
   List<String> _portfolioImages = [];
 
-  double _avgRating = 0.0;
-  int _totalReviews = 0;
-  List<dynamic> _reviews = [];
-  bool _isLoadingReviews = true;
-
   Map<String, dynamic>? _providerRawData;
   final ImagePicker _picker = ImagePicker();
 
@@ -69,7 +60,6 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
     }
 
     if (userId.isNotEmpty) {
-      _fetchReviews(userId);
       final details = await ApiService.getProviderDetails(userId);
       if (details != null && mounted) {
         setState(() {
@@ -133,27 +123,6 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
     );
     if (refreshed == true) {
       _loadProviderData();
-    }
-  }
-
-  Future<void> _fetchReviews(String providerId) async {
-    try {
-      final res = await ApiService.getProviderReviews(providerId);
-      if (mounted) {
-        setState(() {
-          _avgRating = (res['average_rating'] ?? 0.0).toDouble();
-          _totalReviews = res['total_reviews'] ?? 0;
-          _reviews = res['reviews'] ?? [];
-          _isLoadingReviews = false;
-        });
-      }
-    } catch (e) {
-      debugPrint("❌ Fetch Provider Reviews Error: $e");
-      if (mounted) {
-        setState(() {
-          _isLoadingReviews = false;
-        });
-      }
     }
   }
 

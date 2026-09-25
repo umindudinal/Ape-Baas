@@ -7,7 +7,6 @@ import '../services/api_service.dart';
 import '../utils/app_colors.dart';
 import 'provider_jobs_screen.dart';
 import 'provider_messages_screen.dart';
-import 'provider_profile_screen.dart';
 import 'settings_screen.dart';
 import 'notifications_screen.dart';
 import '../services/notification_service.dart';
@@ -1146,7 +1145,7 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen> {
                   onPressed: () async {
                     Navigator.pop(ctx);
                     final result = await ApiService.acceptBooking(bookingId);
-                    if (!context.mounted) return;
+                    if (!mounted) return;
                     if (result['success']) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text(result['message']), backgroundColor: AppColors.successGreen),

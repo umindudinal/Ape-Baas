@@ -377,20 +377,13 @@ const sendEmailOtp = async (toEmail, otpCode) => {
 
     if (nodemailer && smtpUser && smtpPass) {
         try {
-            const transporter = nodemailer.createTransport(
-                (process.env.SMTP_HOST && !process.env.SMTP_HOST.includes('gmail'))
-                    ? {
-                        host: process.env.SMTP_HOST,
-                        port: parseInt(process.env.SMTP_PORT || '587'),
-                        secure: false,
-                        auth: { user: smtpUser, pass: smtpPass },
-                        tls: { rejectUnauthorized: false }
-                    }
-                    : {
-                        service: 'gmail',
-                        auth: { user: smtpUser, pass: smtpPass }
-                    }
-            );
+            const transporter = nodemailer.createTransport({
+                host: process.env.SMTP_HOST || 'smtp.gmail.com',
+                port: parseInt(process.env.SMTP_PORT || '587'),
+                secure: parseInt(process.env.SMTP_PORT || '587') === 465,
+                auth: { user: smtpUser, pass: smtpPass },
+                tls: { rejectUnauthorized: false }
+            });
 
             await transporter.sendMail({
                 from: `"Ape Baas" <${smtpUser}>`,
@@ -693,20 +686,13 @@ const sendForgotEmailOtp = async (toEmail, otpCode, userName) => {
 
     if (nodemailer && smtpUser && smtpPass) {
         try {
-            const transporter = nodemailer.createTransport(
-                (process.env.SMTP_HOST && !process.env.SMTP_HOST.includes('gmail'))
-                    ? {
-                        host: process.env.SMTP_HOST,
-                        port: parseInt(process.env.SMTP_PORT || '587'),
-                        secure: false,
-                        auth: { user: smtpUser, pass: smtpPass },
-                        tls: { rejectUnauthorized: false }
-                    }
-                    : {
-                        service: 'gmail',
-                        auth: { user: smtpUser, pass: smtpPass }
-                    }
-            );
+            const transporter = nodemailer.createTransport({
+                host: process.env.SMTP_HOST || 'smtp.gmail.com',
+                port: parseInt(process.env.SMTP_PORT || '587'),
+                secure: parseInt(process.env.SMTP_PORT || '587') === 465,
+                auth: { user: smtpUser, pass: smtpPass },
+                tls: { rejectUnauthorized: false }
+            });
 
             await transporter.sendMail({
                 from: `"Ape Baas" <${smtpUser}>`,

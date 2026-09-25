@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/api_service.dart';
@@ -501,6 +500,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   await prefs.setStringList('read_notification_ids', readIds);
                 }
               }
+              if (!mounted) return;
               if (item['type'] == 'booking') {
                 if (widget.role == 'provider') {
                   Navigator.push(

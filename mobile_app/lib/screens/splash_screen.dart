@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../utils/app_colors.dart';
 import 'customer_home_screen.dart';
 import 'provider_home_screen.dart';
 import 'role_selection_screen.dart';
@@ -29,6 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     try {
       final prefs = await SharedPreferences.getInstance();
+      if (!mounted) return;
       final userId = prefs.getString('user_id');
       final userRole = prefs.getString('user_role');
 

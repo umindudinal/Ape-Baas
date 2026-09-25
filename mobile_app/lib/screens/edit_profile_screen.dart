@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/api_service.dart';
 import '../utils/app_colors.dart';
@@ -85,8 +83,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String _selectedDistrict = 'පොළොන්නරුව (Polonnaruwa)';
   late String _selectedCity;
   bool _isLoading = false;
-  List<String> _portfolioImages = [];
-  final ImagePicker _picker = ImagePicker();
 
   final Map<String, List<String>> _districtCities = {
     'කොළඹ (Colombo)': ['කොළඹ නගරය', 'නුවර පාර', 'නුගේගොඩ', 'මහරගම', 'දෙහිවල', 'මොරටුව', 'කඩුවෙල', 'හෝමාගම', 'කෝට්ටේ', 'බොරුල්ල', 'බත්තරමුල්ල'],
@@ -145,25 +141,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _selectedCity = _districtCities[_selectedDistrict]!.first;
     if (p['city'] != null && _districtCities[_selectedDistrict]!.contains(p['city'])) {
       _selectedCity = p['city'];
-    }
-
-    if (p['portfolio_images'] is List) {
-      _portfolioImages = List<String>.from(p['portfolio_images']);
-    }
-  }
-
-  Future<void> _pickPortfolioImage() async {
-    try {
-      final XFile? image = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 65, maxWidth: 800);
-      if (image != null) {
-        final bytes = await image.readAsBytes();
-        final base64Image = 'data:image/jpeg;base64,${base64Encode(bytes)}';
-        setState(() {
-          _portfolioImages.add(base64Image);
-        });
-      }
-    } catch (e) {
-      debugPrint("❌ Error picking portfolio image: $e");
     }
   }
 
@@ -319,13 +296,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       experienceYears: widget.isProvider ? int.tryParse(_experienceController.text.trim()) : null,
       workingRadiusKm: widget.isProvider ? int.tryParse(_radiusController.text.trim()) : null,
     );
-
-    if (widget.isProvider) {
-      await ApiService.updateProviderPortfolio(
-        providerId: userId,
-        portfolioImages: _portfolioImages,
-      );
-    }
 
     setState(() {
       _isLoading = false;

@@ -6,8 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../services/api_service.dart';
 import '../utils/app_colors.dart';
 import 'edit_profile_screen.dart';
-import 'role_selection_screen.dart';
-import 'settings_screen.dart';
 
 class CustomerProfileScreen extends StatefulWidget {
   const CustomerProfileScreen({super.key});
@@ -149,6 +147,7 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('profile_image_url', newImageUrl);
       }
+      if (!mounted) return;
       setState(() {
         _isLoading = false;
         if (res['success']) {

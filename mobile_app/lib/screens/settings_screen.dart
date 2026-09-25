@@ -21,7 +21,6 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   String _fullName = '';
   String _email = '';
-  String _userRole = '';
   String _userId = '';
   String _profileImageUrl = '';
 
@@ -46,9 +45,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             prefs.getString('full_name') ??
             (widget.isProvider ? 'සේවා සපයන්නා' : 'පාරිභෝගිකයා');
         _email = prefs.getString('email') ?? 'නොමැත';
-        _userRole =
-            prefs.getString('user_role') ??
-            (widget.isProvider ? 'provider' : 'customer');
         _userId = userId;
         _profileImageUrl = savedImage;
         _notificationsEnabled = prefs.getBool('notifications_enabled') ?? true;
@@ -635,10 +631,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                         ),
                         validator: (val) {
-                          if (val == null || val.isEmpty)
+                          if (val == null || val.isEmpty) {
                             return 'නව මුරපදයක් ඇතුළත් කරන්න';
-                          if (val.length < 6)
+                          }
+                          if (val.length < 6) {
                             return 'අවම වශයෙන් අකුරු 6ක් තිබිය යුතුය';
+                          }
                           return null;
                         },
                       ),
@@ -695,8 +693,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                         ),
                         validator: (val) {
-                          if (val != newPasswordController.text)
+                          if (val != newPasswordController.text) {
                             return 'මුරපද සමාන නොවේ';
+                          }
                           return null;
                         },
                       ),
@@ -767,8 +766,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                         setDialogState(() => isLoading = false);
 
                                         if (result['success'] == true) {
-                                          if (dialogCtx.mounted)
+                                          if (dialogCtx.mounted) {
                                             Navigator.pop(dialogCtx);
+                                          }
                                           if (mounted) {
                                             ScaffoldMessenger.of(
                                               context,
@@ -1997,7 +1997,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const themeColor = AppColors.deepNavy;
     final imageProvider = _getImageProvider(_profileImageUrl);
 
     return Scaffold(
@@ -2209,7 +2208,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ),
                       value: _notificationsEnabled,
-                      activeColor: const Color(0xFFD97706),
+                      activeThumbColor: const Color(0xFFD97706),
                       onChanged: _toggleNotifications,
                     ),
                     const Divider(
@@ -2246,7 +2245,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ),
                       value: _darkModeEnabled,
-                      activeColor: const Color(0xFF7C3AED),
+                      activeThumbColor: const Color(0xFF7C3AED),
                       onChanged: _toggleDarkMode,
                     ),
                     const Divider(

@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../services/api_service.dart';
 import '../utils/app_colors.dart';
-import 'chat_screen.dart';
 
 class CustomerBookingsScreen extends StatefulWidget {
   final VoidCallback? onFindServices;

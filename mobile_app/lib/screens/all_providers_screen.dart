@@ -68,7 +68,7 @@ class _AllProvidersScreenState extends State<AllProvidersScreen> {
   List<Map<String, dynamic>> _dynamicCategories = [];
 
   IconData _getCategoryIcon(String iconName, String nameEn) {
-    final text = (nameEn + ' ' + iconName).toLowerCase();
+    final text = '$nameEn $iconName'.toLowerCase();
     if (text.contains('solar') || text.contains('sun')) return Icons.wb_sunny_rounded;
     if (text.contains('zap') || text.contains('electr') || text.contains('power') || text.contains('light') || text.contains('bulb') || text.contains('wire')) return Icons.electrical_services_rounded;
     if (text.contains('wrench') || text.contains('droplets') || text.contains('plumb') || text.contains('water') || text.contains('tap') || text.contains('gully') || text.contains('pump') || text.contains('well') || text.contains('pipe')) return Icons.plumbing_rounded;
@@ -452,7 +452,7 @@ class _AllProvidersScreenState extends State<AllProvidersScreen> {
                       crossAxisCount: 2,
                       crossAxisSpacing: 12,
                       mainAxisSpacing: 14,
-                      childAspectRatio: 0.65,
+                      childAspectRatio: 0.76,
                     ),
                     itemCount: filteredList.length,
                     itemBuilder: (context, index) {
@@ -477,10 +477,10 @@ class _AllProvidersScreenState extends State<AllProvidersScreen> {
                           );
                         },
                         child: Container(
-                          padding: const EdgeInsets.all(12),
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(22),
+                            borderRadius: BorderRadius.circular(20),
                             boxShadow: [
                               BoxShadow(
                                 color: AppColors.deepNavy.withValues(alpha: 0.05),
@@ -515,14 +515,14 @@ class _AllProvidersScreenState extends State<AllProvidersScreen> {
                                           ],
                                         ),
                                         child: CircleAvatar(
-                                          radius: 35,
+                                          radius: 33,
                                           backgroundColor: AppColors.navySubtle,
                                           backgroundImage: imgProvider,
                                           child: imgProvider == null
                                               ? Text(
                                                   name.isNotEmpty ? name[0].toUpperCase() : 'P',
                                                   style: const TextStyle(
-                                                    fontSize: 26,
+                                                    fontSize: 24,
                                                     fontWeight: FontWeight.bold,
                                                     color: AppColors.deepNavy,
                                                   ),
@@ -535,14 +535,14 @@ class _AllProvidersScreenState extends State<AllProvidersScreen> {
                                           bottom: 0,
                                           right: 0,
                                           child: CircleAvatar(
-                                            radius: 10.5,
+                                            radius: 10,
                                             backgroundColor: Colors.white,
-                                            child: Icon(Icons.verified_rounded, color: AppColors.successGreen, size: 17),
+                                            child: Icon(Icons.verified_rounded, color: AppColors.successGreen, size: 16),
                                           ),
                                         ),
                                     ],
                                   ),
-                                  const SizedBox(height: 10),
+                                  const SizedBox(height: 7),
 
                                   // Name
                                   Text(
@@ -572,7 +572,7 @@ class _AllProvidersScreenState extends State<AllProvidersScreen> {
                                       style: const TextStyle(fontSize: 10, color: AppColors.deepNavy, fontWeight: FontWeight.bold),
                                     ),
                                   ),
-                                  const SizedBox(height: 6),
+                                  const SizedBox(height: 5),
 
                                   // Rating & Location
                                   Row(
@@ -624,7 +624,7 @@ class _AllProvidersScreenState extends State<AllProvidersScreen> {
                               // Book Button
                               SizedBox(
                                 width: double.infinity,
-                                height: 34,
+                                height: 32,
                                 child: ElevatedButton(
                                   onPressed: () {
                                     Navigator.push(

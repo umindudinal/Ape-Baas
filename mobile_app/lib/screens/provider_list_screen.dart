@@ -167,7 +167,7 @@ class _ProviderListScreenState extends State<ProviderListScreen> {
               crossAxisCount: 2,
               crossAxisSpacing: 12,
               mainAxisSpacing: 14,
-              childAspectRatio: 0.65,
+              childAspectRatio: 0.76,
             ),
             itemCount: matchingProviders.length,
             itemBuilder: (context, index) {
@@ -192,10 +192,10 @@ class _ProviderListScreenState extends State<ProviderListScreen> {
                   );
                 },
                 child: Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(22),
+                    borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
                         color: AppColors.deepNavy.withValues(alpha: 0.05),
@@ -230,14 +230,14 @@ class _ProviderListScreenState extends State<ProviderListScreen> {
                                   ],
                                 ),
                                 child: CircleAvatar(
-                                  radius: 35,
+                                  radius: 33,
                                   backgroundColor: AppColors.navySubtle,
                                   backgroundImage: imgProvider,
                                   child: imgProvider == null
                                       ? Text(
                                           name.isNotEmpty ? name[0].toUpperCase() : 'P',
                                           style: const TextStyle(
-                                            fontSize: 26,
+                                            fontSize: 24,
                                             fontWeight: FontWeight.bold,
                                             color: AppColors.deepNavy,
                                           ),
@@ -250,14 +250,14 @@ class _ProviderListScreenState extends State<ProviderListScreen> {
                                   bottom: 0,
                                   right: 0,
                                   child: CircleAvatar(
-                                    radius: 10.5,
+                                    radius: 10,
                                     backgroundColor: Colors.white,
-                                    child: Icon(Icons.verified_rounded, color: AppColors.successGreen, size: 17),
+                                    child: Icon(Icons.verified_rounded, color: AppColors.successGreen, size: 16),
                                   ),
                                 ),
                             ],
                           ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 7),
 
                           // Name
                           Text(
@@ -287,7 +287,7 @@ class _ProviderListScreenState extends State<ProviderListScreen> {
                               style: const TextStyle(fontSize: 10, color: AppColors.deepNavy, fontWeight: FontWeight.bold),
                             ),
                           ),
-                          const SizedBox(height: 6),
+                          const SizedBox(height: 5),
 
                           // Rating & Location
                           Row(
@@ -339,7 +339,7 @@ class _ProviderListScreenState extends State<ProviderListScreen> {
                       // Book Button
                       SizedBox(
                         width: double.infinity,
-                        height: 34,
+                        height: 32,
                         child: ElevatedButton(
                           onPressed: () {
                             Navigator.push(

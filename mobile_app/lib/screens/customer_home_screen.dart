@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../services/api_service.dart';
 import '../utils/app_colors.dart';
 import 'provider_list_screen.dart';
@@ -28,14 +27,9 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   String _customerName = 'පාරිභෝගිකයා';
   String _profileImageUrl = '';
   String _customerLocation = 'ශ්‍රී ලංකාව';
-  String _searchQuery = '';
-  String _selectedBookingTab = 'සියල්ල';
   final GlobalKey<CustomerBookingsScreenState> _bookingsKey = GlobalKey<CustomerBookingsScreenState>();
   
-  Future<List<dynamic>>? _customerBookingsFuture;
   Future<List<dynamic>>? _topProvidersFuture;
-  
-
 
   ImageProvider? _getImageProvider(String imageStr) {
     if (imageStr.trim().isEmpty) return null;
@@ -52,68 +46,6 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
       return null;
     }
   }
-
-  List<Map<String, dynamic>> _dynamicCategories = [];
-
-  IconData _getCategoryIcon(String iconName, String nameEn) {
-    final text = (nameEn + ' ' + iconName).toLowerCase();
-    if (text.contains('solar') || text.contains('sun')) return Icons.wb_sunny_rounded;
-    if (text.contains('zap') || text.contains('electr') || text.contains('power') || text.contains('light')) return Icons.bolt_rounded;
-    if (text.contains('wrench') || text.contains('plumb') || text.contains('water') || text.contains('gully') || text.contains('pump') || text.contains('well')) return Icons.plumbing_rounded;
-    if (text.contains('hammer') || text.contains('carpent') || text.contains('wood') || text.contains('furniture') || text.contains('curtain')) return Icons.handyman_rounded;
-    if (text.contains('roof')) return Icons.roofing_rounded;
-    if (text.contains('door') || text.contains('aluminum') || text.contains('glass') || text.contains('window')) return Icons.door_sliding_rounded;
-    if (text.contains('wind') || text.contains('ac') || text.contains('air') || text.contains('cool') || text.contains('fan')) return Icons.ac_unit_rounded;
-    if (text.contains('building') || text.contains('mason') || text.contains('brick') || text.contains('concrete') || text.contains('demolit')) return Icons.foundation_rounded;
-    if (text.contains('paint') || text.contains('color') || text.contains('wall')) return Icons.format_paint_rounded;
-    if (text.contains('grid') || text.contains('tile') || text.contains('floor') || text.contains('interlock')) return Icons.grid_view_rounded;
-    if (text.contains('trees') || text.contains('garden') || text.contains('tree') || text.contains('landscape')) return Icons.park_rounded;
-    if (text.contains('sparkles') || text.contains('clean') || text.contains('wash') || text.contains('deep')) return Icons.cleaning_services_rounded;
-    if (text.contains('camera') || text.contains('cctv') || text.contains('security')) return Icons.videocam_rounded;
-    if (text.contains('bug') || text.contains('pest')) return Icons.bug_report_rounded;
-    if (text.contains('truck') || text.contains('car') || text.contains('moving') || text.contains('transport')) return Icons.local_shipping_rounded;
-    if (text.contains('key') || text.contains('lock')) return Icons.lock_rounded;
-    if (text.contains('tv') || text.contains('dish')) return Icons.tv_rounded;
-    if (text.contains('cpu') || text.contains('it') || text.contains('computer')) return Icons.computer_rounded;
-    if (text.contains('flame') || text.contains('weld') || text.contains('metal') || text.contains('gas')) return Icons.precision_manufacturing_rounded;
-    
-    return Icons.construction_rounded;
-  }
-
-  void _loadCategoriesFromBackend() async {
-    final list = await ApiService.getCategories();
-    if (list.isNotEmpty && mounted) {
-      final activeList = list.where((c) => c['status'] == 'Active').toList();
-      final mapped = <Map<String, dynamic>>[];
-      for (int i = 0; i < activeList.length; i++) {
-        final c = activeList[i];
-        final String nameEn = c['nameEn'] ?? c['name_en'] ?? '';
-        final String nameSi = c['nameSi'] ?? c['name_si'] ?? nameEn;
-        final String iconStr = c['icon'] ?? 'Wrench';
-        mapped.add({
-          'name': nameEn,
-          'label': nameSi,
-          'icon': _getCategoryIcon(iconStr, nameEn),
-        });
-      }
-      setState(() {
-        _dynamicCategories = mapped;
-      });
-    }
-  }
-
-  final List<Map<String, dynamic>> _defaultCategories = [
-    {'name': 'Electrician Services', 'label': 'විදුලි වැඩ', 'icon': Icons.electrical_services_rounded},
-    {'name': 'Plumbing & Water Lines', 'label': 'ජලනල වැඩ', 'icon': Icons.plumbing_rounded},
-    {'name': 'Carpentry & Woodwork', 'label': 'වඩු වැඩ', 'icon': Icons.handyman_rounded},
-    {'name': 'AC Repair & Service', 'label': 'A/C අලුත්වැඩියා', 'icon': Icons.ac_unit_rounded},
-    {'name': 'Masonry & Construction', 'label': 'මේසන් වැඩ', 'icon': Icons.foundation_rounded},
-    {'name': 'House Painting', 'label': 'තීන්ත ගෑම', 'icon': Icons.format_paint_rounded},
-    {'name': 'Tile Laying & Flooring', 'label': 'ටයිල් ඇල්ලීම', 'icon': Icons.grid_on_rounded},
-    {'name': 'Gardening & Landscaping', 'label': 'ගෙවතු අලංකරණය', 'icon': Icons.park_rounded},
-    {'name': 'House Deep Cleaning', 'label': 'පිරිසිදු කිරීම', 'icon': Icons.cleaning_services_rounded},
-    {'name': 'Solar Panel Installation', 'label': 'සූර්ය පැනල', 'icon': Icons.wb_sunny_rounded},
-  ];
 
   List<Map<String, dynamic>> get _promoBanners => [
     {
@@ -178,8 +110,6 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   void initState() {
     super.initState();
     _loadCustomerName();
-    _loadCustomerBookings();
-    _loadCategoriesFromBackend();
     _loadTopProviders();
   }
 
@@ -187,44 +117,6 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
     if (mounted) {
       setState(() {
         _topProvidersFuture = ApiService.getAllProviders();
-      });
-    }
-  }
-
-  Future<void> _makePhoneCall(String phoneNumber) async {
-    final cleanPhone = phoneNumber.replaceAll(RegExp(r'[^\d+]'), '');
-    if (cleanPhone.isEmpty || cleanPhone == 'නොමැත') {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('දුරකථන අංකය සපයා නොමැත.')),
-        );
-      }
-      return;
-    }
-    final Uri launchUri = Uri.parse('tel:$cleanPhone');
-    try {
-      final launched = await launchUrl(launchUri, mode: LaunchMode.externalApplication);
-      if (!launched && mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('දුරකථන අංකය: $phoneNumber')),
-        );
-      }
-    } catch (e) {
-      debugPrint("Could not launch phone call: $e");
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('දුරකථන අංකය: $phoneNumber')),
-        );
-      }
-    }
-  }
-
-  void _loadCustomerBookings() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String userId = prefs.getString('user_id') ?? '';
-    if (userId.isNotEmpty && mounted) {
-      setState(() {
-        _customerBookingsFuture = ApiService.getCustomerBookings(userId);
       });
     }
   }
@@ -995,8 +887,6 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
           child: RefreshIndicator(
             onRefresh: () async {
               _loadCustomerName();
-              _loadCustomerBookings();
-              _loadCategoriesFromBackend();
               _loadTopProviders();
               await Future.delayed(const Duration(milliseconds: 400));
             },
@@ -1018,52 +908,6 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildCategoryShortcutTile({
-    required IconData icon,
-    required String label,
-    required Color color,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(18),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.deepNavy.withValues(alpha: 0.05),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
-          ],
-          border: Border.all(color: AppColors.cardBorder.withValues(alpha: 0.6)),
-        ),
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: AppColors.navySubtle,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(icon, size: 18, color: color),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              label,
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.bold, color: AppColors.textDark),
-            ),
-          ],
-        ),
-      ),
     );
   }
 

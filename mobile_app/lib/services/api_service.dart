@@ -9,7 +9,7 @@ class ApiService {
     if (kIsWeb) {
       return 'http://localhost:5000/api';
     }
-    return 'http://192.168.43.193:5000/api';
+    return 'http://10.11.6.9:5000/api';
   }
 
   static Future<Map<String, dynamic>> login(String email, String password, {String? role}) async {
@@ -20,7 +20,7 @@ class ApiService {
         body: jsonEncode({
           'email': email, 
           'password': password,
-          if (role != null) 'role': role,
+          'role': ?role,
         }),
       );
 
@@ -154,7 +154,7 @@ class ApiService {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'email': email,
-          if (role != null) 'role': role,
+          'role': ?role,
         }),
       );
 
@@ -181,7 +181,7 @@ class ApiService {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'email': email,
-          if (role != null) 'role': role,
+          'role': ?role,
         }),
       );
 
@@ -517,12 +517,12 @@ class ApiService {
         'full_name': fullName,
         'phone': phone,
         'address': address,
-        if (district != null) 'district': district,
-        if (city != null) 'city': city,
-        if (profileImageUrl != null) 'profile_image_url': profileImageUrl,
-        if (serviceCategory != null) 'service_category': serviceCategory,
-        if (experienceYears != null) 'experience_years': experienceYears,
-        if (workingRadiusKm != null) 'working_radius_km': workingRadiusKm,
+        'district': ?district,
+        'city': ?city,
+        'profile_image_url': ?profileImageUrl,
+        'service_category': ?serviceCategory,
+        'experience_years': ?experienceYears,
+        'working_radius_km': ?workingRadiusKm,
       };
 
       final response = await http.put(

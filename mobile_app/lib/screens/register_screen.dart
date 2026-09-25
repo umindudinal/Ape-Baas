@@ -5,7 +5,6 @@ import '../services/api_service.dart';
 import '../utils/app_colors.dart';
 import 'provider_onboarding_screen.dart';
 import 'customer_home_screen.dart';
-import 'provider_home_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   final String role; // 'customer' හෝ 'provider'

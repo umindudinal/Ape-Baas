@@ -971,20 +971,13 @@ const sendAdminLoginEmailOtp = async (toEmail, toName, otpCode) => {
 
     if (nodemailer && smtpUser && smtpPass) {
         try {
-            const transporter = nodemailer.createTransport(
-                (process.env.SMTP_HOST && !process.env.SMTP_HOST.includes('gmail'))
-                    ? {
-                        host: process.env.SMTP_HOST,
-                        port: parseInt(process.env.SMTP_PORT || '587'),
-                        secure: false,
-                        auth: { user: smtpUser, pass: smtpPass },
-                        tls: { rejectUnauthorized: false }
-                    }
-                    : {
-                        service: 'gmail',
-                        auth: { user: smtpUser, pass: smtpPass }
-                    }
-            );
+            const transporter = nodemailer.createTransport({
+                host: process.env.SMTP_HOST || 'smtp.gmail.com',
+                port: parseInt(process.env.SMTP_PORT || '587'),
+                secure: parseInt(process.env.SMTP_PORT || '587') === 465,
+                auth: { user: smtpUser, pass: smtpPass },
+                tls: { rejectUnauthorized: false }
+            });
 
             const htmlContent = generateAdaptiveOtpEmail({
                 titleBadge: '🔐',
@@ -1278,20 +1271,13 @@ const sendAdminResetOtp = async (req, res) => {
 
         if (nodemailer && smtpUser && smtpPass) {
             try {
-                const transporter = nodemailer.createTransport(
-                    (process.env.SMTP_HOST && !process.env.SMTP_HOST.includes('gmail'))
-                        ? {
-                            host: process.env.SMTP_HOST,
-                            port: parseInt(process.env.SMTP_PORT || '587'),
-                            secure: false,
-                            auth: { user: smtpUser, pass: smtpPass },
-                            tls: { rejectUnauthorized: false }
-                        }
-                        : {
-                            service: 'gmail',
-                            auth: { user: smtpUser, pass: smtpPass }
-                        }
-                );
+                const transporter = nodemailer.createTransport({
+                    host: process.env.SMTP_HOST || 'smtp.gmail.com',
+                    port: parseInt(process.env.SMTP_PORT || '587'),
+                    secure: parseInt(process.env.SMTP_PORT || '587') === 465,
+                    auth: { user: smtpUser, pass: smtpPass },
+                    tls: { rejectUnauthorized: false }
+                });
 
                 const htmlContent = generateAdaptiveOtpEmail({
                     titleBadge: '🔑',
@@ -1413,8 +1399,7 @@ const resetAdminPassword = async (req, res) => {
         const { error: updateErr } = await supabase
             .from('profiles')
             .update({
-                fcm_token: newPasswordHash,
-                updated_at: new Date().toISOString()
+                fcm_token: newPasswordHash
             })
             .eq('id', adminId);
 
@@ -1477,20 +1462,13 @@ const sendAdminEmailOtp = async (toEmail, toName, otpCode) => {
 
     if (nodemailer && smtpUser && smtpPass) {
         try {
-            const transporter = nodemailer.createTransport(
-                (process.env.SMTP_HOST && !process.env.SMTP_HOST.includes('gmail'))
-                    ? {
-                        host: process.env.SMTP_HOST,
-                        port: parseInt(process.env.SMTP_PORT || '587'),
-                        secure: false,
-                        auth: { user: smtpUser, pass: smtpPass },
-                        tls: { rejectUnauthorized: false }
-                    }
-                    : {
-                        service: 'gmail',
-                        auth: { user: smtpUser, pass: smtpPass }
-                    }
-            );
+            const transporter = nodemailer.createTransport({
+                host: process.env.SMTP_HOST || 'smtp.gmail.com',
+                port: parseInt(process.env.SMTP_PORT || '587'),
+                secure: parseInt(process.env.SMTP_PORT || '587') === 465,
+                auth: { user: smtpUser, pass: smtpPass },
+                tls: { rejectUnauthorized: false }
+            });
 
             const htmlContent = generateAdaptiveOtpEmail({
                 titleBadge: '🛡️',
@@ -1811,6 +1789,15 @@ const createProviderAccount = async (req, res) => {
         return res.status(400).json({
             success: false,
             error: "කරුණාකර නම, ඊමේල් ලිපිනය, දුරකථන අංකය, මුරපදය සහ සේවා කාණ්ඩය (Category) ඇතුළත් කරන්න."
+        });
+    }
+
+    // Strong Password Validation: min 8 chars, 1 uppercase, 1 lowercase, 1 digit, 1 special character
+    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>_\-]).{8,}$/;
+    if (!strongPasswordRegex.test(password)) {
+        return res.status(400).json({
+            success: false,
+            error: "මුරපදය අවම වශයෙන් අක්ෂර 8ක්, කැපිටල් (A-Z), සිම්පල් (a-z), ඉලක්කම් (0-9) සහ විශේෂ සංකේතයක් (@#$) සහිත ශක්තිමත් එකක් (Strong Password) විය යුතුය."
         });
     }
 

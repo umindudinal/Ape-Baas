@@ -312,7 +312,9 @@ export const deleteAdminReviewApi = async (reviewId) => {
 };
 
 // --- Category Management APIs ---
-const CATEGORY_API = 'http://localhost:5000/api/categories';
+const CATEGORY_API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:5000/api/categories'
+  : `http://${window.location.hostname}:5000/api/categories`;
 
 export const fetchCategoriesApi = async () => {
   try {

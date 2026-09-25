@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../services/api_service.dart';
 import '../utils/app_colors.dart';
@@ -435,10 +434,8 @@ class _ProviderDetailsScreenState extends State<ProviderDetailsScreen> {
       ...(_fetchedProviderDetails ?? {}),
     };
     final fullName = provider['full_name'] ?? provider['name'] ?? 'සේවා සපයන්නා';
-    final email = provider['email'] ?? 'නොමැත';
     final phone = provider['phone'] ?? 'නොමැත';
     final category = provider['service_category'] ?? 'සඳහන් කර නැත';
-    final nic = provider['nic_number'] ?? 'සඳහන් කර නැත';
     final experience = provider['experience_years'] ?? 0;
     final radius = provider['working_radius_km'] ?? 0;
     final isVerified = provider['is_verified'] ?? false;
